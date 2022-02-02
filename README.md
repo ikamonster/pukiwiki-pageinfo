@@ -8,7 +8,9 @@
 
 ## インストール
 
-pageinfo.inc.php を PukiWiki の plugin ディレクトリに配置してください。
+下記GitHubページからダウンロードした pageinfo.inc.php を PukiWiki の plugin ディレクトリに配置してください。
+
+[https://github.com/ikamonster/pukiwiki-pageinfo](https://github.com/ikamonster/pukiwiki-pageinfo)
 
 ## 使い方
 
