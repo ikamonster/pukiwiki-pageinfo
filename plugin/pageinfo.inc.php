@@ -1,7 +1,7 @@
 <?php
 /*
 PukiWiki - Yet another WikiWikiWeb clone.
-pageinfo.inc.php, v1.00 2020 M.Taniguchi
+pageinfo.inc.php, v1.01 2020 M.Taniguchi
 License: GPL v3 or (at your option) any later version
 
 ページ情報を表示するPukiWiki用プラグイン。
@@ -54,7 +54,6 @@ function plugin_pageinfo_action() {
 	$page = isset($vars['refer'])? $vars['refer'] : '';
 	if (!is_page($page) || !check_readable($page, false, false)) $page = '';
 
-	$url = get_page_uri($page);
 	$msg = plugin_pageinfo_trans('Information for $1');
 	$thStyle = ' style="text-align:right;width:8em"';
 	$tdStyle = ' style="min-width:14.5em"';
@@ -63,7 +62,7 @@ function plugin_pageinfo_action() {
 
 	if ($page) {
 		$vars['page'] = $page;
-		$fullUrl = preg_replace('/^\.\//', get_script_uri(), $url);
+		$fullUrl = get_page_uri($page, PKWK_URI_ABSOLUTE);
 		$file = get_filename($page);
 		$length = filesize($file);
 		$modified = format_date(get_filetime($page));
@@ -80,7 +79,7 @@ function plugin_pageinfo_action() {
 	}
 
 	// Title
-	//$body = '<h2>Information for <a href="' . $url . '">' . htmlsc($page) . '</a></h2>';
+	//$body = '<h2>Information for <a href="' . get_page_uri($page) . '">' . htmlsc($page) . '</a></h2>';
 
 	// Tools
 	if (PLUGIN_PAGEINFO_SHOW_PAGE_FUNCTIONS != 0 || PLUGIN_PAGEINFO_SHOW_GENERAL_FUNCTIONS != 0) {
