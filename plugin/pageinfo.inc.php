@@ -1,7 +1,7 @@
 <?php
 /*
 PukiWiki - Yet another WikiWikiWeb clone.
-pageinfo.inc.php, v1.01 2020 M.Taniguchi
+pageinfo.inc.php, v1.1.0 2020 M.Taniguchi
 License: GPL v3 or (at your option) any later version
 
 ページ情報を表示するPukiWiki用プラグイン。
@@ -27,6 +27,7 @@ if (!defined('PLUGIN_PAGEINFO_SHOW_VIEWS'))             define('PLUGIN_PAGEINFO_
 if (!defined('PLUGIN_PAGEINFO_SHOW_PROTECTION'))        define('PLUGIN_PAGEINFO_SHOW_PROTECTION',        1); // ページ保護情報を表示
 if (!defined('PLUGIN_PAGEINFO_SHOW_CMSINFO'))           define('PLUGIN_PAGEINFO_SHOW_CMSINFO',           0); // CMS（PukiWiki）情報を表示
 if (!defined('PLUGIN_PAGEINFO_SHOW_SERVERINFO'))        define('PLUGIN_PAGEINFO_SHOW_SERVERINFO',        0); // サーバー情報を表示
+if (!defined('PLUGIN_PAGEINFO_SHOW_USERINFO'))          define('PLUGIN_PAGEINFO_SHOW_USERINFO',          1); // 認証ユーザー情報を表示（ログイン時のみ表示）
 
 
 function plugin_pageinfo_convert() {
@@ -47,7 +48,7 @@ function plugin_pageinfo_getlink($label) {
 }
 
 function plugin_pageinfo_action() {
-	global	$vars, $nofollow, $function_freeze, $do_backup, $auth_type, $auth_user, $whatsnew, $auth_method_type, $read_auth, $read_auth_pages, $edit_auth, $edit_auth_pages, $rss_max, $page_title, $modifier, $modifierlink;
+	global	$vars, $nofollow, $function_freeze, $do_backup, $auth_type, $auth_user, $auth_user_fullname, $auth_user_groups, $whatsnew, $auth_method_type, $read_auth, $read_auth_pages, $edit_auth, $edit_auth_pages, $rss_max, $page_title, $modifier, $modifierlink;
 
 	$nofollow = 1;
 
@@ -175,11 +176,11 @@ function plugin_pageinfo_action() {
 			if ($auth_method_type == 'pagename') {
 				$readAuth = false;
 				if ($read_auth) foreach ($read_auth_pages as $preg => $v) if ($readAuth = preg_match($preg, $page)) break;
-				$readAuth = $readAuth ? 'authenticated user only' : 'everyone';
+				$readAuth = $readAuth ? 'authenticated users only' : 'everyone';
 
 				$editAuth = false;
 				if ($edit_auth) foreach ($edit_auth_pages as $preg => $v) if ($editAuth = preg_match($preg, $page)) break;
-				$editAuth = $editAuth ? 'authenticated user only' : 'everyone';
+				$editAuth = $editAuth ? 'authenticated users only' : 'everyone';
 			}
 
 			$body .= '<tr><th class="style_th" colspan="2" style="text-align:center">' . plugin_pageinfo_trans('Page protection') . '</th></tr>';
@@ -232,6 +233,21 @@ function plugin_pageinfo_action() {
 		$body .= '</tbody></table></p>';
 	}
 
+	// User information
+	if (PLUGIN_PAGEINFO_SHOW_USERINFO != 0 && $auth_user) {
+		$body .= '<h3>' . plugin_pageinfo_trans('Authenticated user information') . '</h3><p><table class="style_table" cellspacing="1" border="0"><tbody>';
+		$thStyle = ' style="text-align:right;width:8em"';
+		$tdStyle = ' style="min-width:8em"';
+
+		$body .= '<tr><td class="style_td"' . $thStyle . '>User name</th><td class="style_td"' . $tdStyle . '>' . ($auth_user ? $auth_user : '-') . '</td></tr>';
+		$body .= '<tr><td class="style_td"' . $thStyle . '>Full name</th><td class="style_td"' . $tdStyle . '>' . ($auth_user_fullname ? $auth_user_fullname : '-') . '</td></tr>';
+		$body .= '<tr><td class="style_td"' . $thStyle . '>Groups</th><td class="style_td"' . $tdStyle . '>';
+		foreach($auth_user_groups as $group) $body .= $group . '<br/>';
+		$body .= '</td></tr>';
+		$body .= '<tr><td class="style_td"' . $thStyle . '>Auth type</th><td class="style_td"' . $tdStyle . '>' . preg_replace('/\:$/ui', '', get_auth_user_prefix()) . '</td></tr>';
+		$body .= '</tbody></table></p>';
+	}
+
 	return array('msg' => $msg, 'body' => $body);
 }
 
@@ -255,6 +271,7 @@ function plugin_pageinfo_trans($str) {
 			'Content management system' => '文書管理システム',
 			'Server information' => 'サーバー情報',
 			'Information for $1' => '$1 の情報',
+			'Authenticated user information' => '認証ユーザー情報',
 		),
 	);
 
