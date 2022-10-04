@@ -42,4 +42,4 @@ label … ページ情報表示へのリンクラベル。省略するとアイ�
 |PLUGIN_PAGEINFO_SHOW_PROTECTION| 0 or 1| 1|ページ保護情報を表示|
 |PLUGIN_PAGEINFO_SHOW_CMSINFO| 0 or 1| 0|CMS（PukiWiki）情報を表示|
 |PLUGIN_PAGEINFO_SHOW_SERVERINFO| 0 or 1| 0|サーバー情報を表示|
-|PLUGIN_PAGEINFO_SHOW_USERINFO| 0 or 1| 0|認証ユーザー情報を表示（ログイン時のみ）|
+|PLUGIN_PAGEINFO_SHOW_USERINFO| 0 or 1| 1|認証ユーザー情報を表示（ログイン時のみ）|
