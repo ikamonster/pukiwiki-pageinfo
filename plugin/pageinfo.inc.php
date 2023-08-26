@@ -1,7 +1,7 @@
 <?php
 /*
 PukiWiki - Yet another WikiWikiWeb clone.
-pageinfo.inc.php, v1.1.0 2020 M.Taniguchi
+pageinfo.inc.php, v1.1.1 2020 M.Taniguchi
 License: GPL v3 or (at your option) any later version
 
 ページ情報を表示するPukiWiki用プラグイン。
@@ -27,7 +27,7 @@ if (!defined('PLUGIN_PAGEINFO_SHOW_VIEWS'))             define('PLUGIN_PAGEINFO_
 if (!defined('PLUGIN_PAGEINFO_SHOW_PROTECTION'))        define('PLUGIN_PAGEINFO_SHOW_PROTECTION',        1); // ページ保護情報を表示
 if (!defined('PLUGIN_PAGEINFO_SHOW_CMSINFO'))           define('PLUGIN_PAGEINFO_SHOW_CMSINFO',           0); // CMS（PukiWiki）情報を表示
 if (!defined('PLUGIN_PAGEINFO_SHOW_SERVERINFO'))        define('PLUGIN_PAGEINFO_SHOW_SERVERINFO',        0); // サーバー情報を表示
-if (!defined('PLUGIN_PAGEINFO_SHOW_USERINFO'))          define('PLUGIN_PAGEINFO_SHOW_USERINFO',          1); // 認証ユーザー情報を表示（ログイン時のみ表示）
+if (!defined('PLUGIN_PAGEINFO_SHOW_USERINFO'))          define('PLUGIN_PAGEINFO_SHOW_USERINFO',          1); // 認証ユーザー情報を表示（ログイン時のみ）
 
 
 function plugin_pageinfo_convert() {
@@ -44,7 +44,7 @@ function plugin_pageinfo_getlink($label) {
 	global	$vars;
 	$page = isset($vars['page'])? $vars['page'] : '';
 	$label = ($label)? htmlsc(plugin_pageinfo_trans($label)) : '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAe1BMVEUAAAD///+/v78QEBKGhoZCSl/6+vvu7u7k5OQ0Okvx8fHq6+vo6Oje3d7Y2dnPz890dHRjY2NUVFQqLz0hJS8YGyIYGBgICQkCAgL19fXT09OBgYF7e3tra2xbWlpMTE1FRkY6OjsvLy8oKCggISDV1dbMzMxAQEE0NTRB938eAAAAAXRSTlMAQObYZgAAAIZJREFUGNOtyEcSwjAMAECkkNiku6d3yv9fiIFhBMOR7HEPOzh6bVeW3wlPvfjNSID8yNZPGIaDHCfK7pUxwytlCVEdM5akOFP2UJ88znGhFBAnSime4Uo5AEu11lmOG6WEhBtj8gYt5Qhp8FBgQDlBlp+borigo5zxraK8LetmbeBcRfmHO3w1B3ApqDMCAAAAAElFTkSuQmCC" title="' . plugin_pageinfo_trans('Information') . '"/>';
-	return '<a href="./?plugin=pageinfo&refer=' . urlencode($page) . '" rel="nofollow">' . $label . '</a>';
+	return '<a href="./?plugin=pageinfo&amp;refer=' . urlencode($page) . '" rel="nofollow">' . $label . '</a>';
 }
 
 function plugin_pageinfo_action() {
